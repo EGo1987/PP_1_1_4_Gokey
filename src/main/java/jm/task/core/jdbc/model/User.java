@@ -8,13 +8,10 @@ import javax.persistence.Table;
 public class User {
     @Id
     private Long id;
-
     @Column
     private String name;
-
     @Column
     private String lastName;
-
     @Column
     private Byte age;
 
@@ -58,5 +55,15 @@ public class User {
 
     public void setAge(Byte age) {
         this.age = age;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id = " + id +
+                ", name = '" + name + '\'' +
+                ", lastName = '" + lastName + '\'' +
+                ", age = " + age +
+                '}';
     }
 }
