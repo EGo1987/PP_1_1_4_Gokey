@@ -72,7 +72,7 @@ public class UserDaoJDBCImpl implements UserDao {
             preparedStatement.executeUpdate();
             connection.commit();
             connection.setAutoCommit(true);
-            System.out.println("User c ID=" + id + " успешно удалён!");
+            System.out.println("User c ID = " + id + " успешно удалён!");
             connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
