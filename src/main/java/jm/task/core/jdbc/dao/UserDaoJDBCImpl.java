@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoJDBCImpl implements UserDao {
+    Connection connection = Util.getConnection();
 
     public UserDaoJDBCImpl() {
 
@@ -17,7 +18,7 @@ public class UserDaoJDBCImpl implements UserDao {
     public void createUsersTable() {
         String sql = "CREATE TABLE users (id INT PRIMARY KEY AUTO_INCREMENT," +
                 "name VARCHAR(45), lastname VARCHAR(45), age TINYINT)";
-        try (Statement statement = Util.getConnection().createStatement()) {
+        try (Statement statement = connection.createStatement()) {
             statement.executeUpdate(sql);
             System.out.println("Таблица успешно создана!");
         } catch (SQLException e) {
@@ -27,7 +28,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
     @Override
     public void dropUsersTable() {
-        try (Statement statement = Util.getConnection().createStatement()) {
+        try (Statement statement = connection.createStatement()) {
             statement.executeUpdate("DROP TABLE IF EXISTS mydbtest.users");
             System.out.println("Таблица успешно удалена!");
         } catch (SQLException e) {
@@ -38,10 +39,7 @@ public class UserDaoJDBCImpl implements UserDao {
     @Override
     public void saveUser(String name, String lastName, byte age) {
         String sql = "INSERT INTO mydbtest.users (name, lastname, age) VALUES (?,?,?)";
-        Connection connection = null;
-        try {
-            connection = Util.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             connection.setAutoCommit(false);
             preparedStatement.setString(1, name);
             preparedStatement.setString(2, lastName);
@@ -50,7 +48,6 @@ public class UserDaoJDBCImpl implements UserDao {
             connection.commit();
             connection.setAutoCommit(true);
             System.out.println("User c именем " + name + " успешно добавлен!");
-            connection.close();
         } catch (SQLException e) {
             try {
                 connection.rollback();
@@ -63,17 +60,13 @@ public class UserDaoJDBCImpl implements UserDao {
     @Override
     public void removeUserById(long id) {
         String sql = "DELETE FROM mydbtest.users where id=?";
-        Connection connection = null;
-        try {
-            connection = Util.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             connection.setAutoCommit(false);
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
             connection.commit();
             connection.setAutoCommit(true);
             System.out.println("User c ID = " + id + " успешно удалён!");
-            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
             try {
@@ -87,11 +80,9 @@ public class UserDaoJDBCImpl implements UserDao {
     @Override
     public List<User> getAllUsers() {
         List<User> list = new ArrayList<>();
-        Statement statement;
         User user;
         String sql = "SELECT id, name, lastname, age from  mydbtest.users";
-        try {
-            statement = Util.getConnection().createStatement();
+        try (Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {
                 user = new User();
@@ -112,7 +103,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
     @Override
     public void cleanUsersTable() {
-        try (Statement statement = Util.getConnection().createStatement()) {
+        try (Statement statement = connection.createStatement()) {
             statement.executeUpdate("TRUNCATE TABLE mydbtest.users");
             System.out.println("Таблица успешно очищена!");
         } catch (SQLException e) {
