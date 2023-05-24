@@ -8,9 +8,10 @@ public class Util {
     private static final String DB_URL = "jdbc:mysql://localhost:3306/mydbtest";
     private static final String DB_USERNAME = "root";
     private static final String DB_PASSWORD = "R00T_Tdutybq_>hmtdbx";
+    private static Connection connection;
 
     public static Connection getConnection(){
-        Connection connection = null;
+        connection = null;
         try {
             connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
             if (!connection.isClosed()) {
@@ -24,7 +25,7 @@ public class Util {
     }
     public static void closeConnection(){
         try {
-            getConnection().close();
+           connection.close();
             System.out.println("Подключение к БД успешно закрыто!");
         } catch (SQLException e) {
             e.printStackTrace();
