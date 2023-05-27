@@ -10,7 +10,7 @@ public class Util {
     private static final String DB_PASSWORD = "R00T_Tdutybq_>hmtdbx";
     private static Connection connection;
 
-    public static Connection getConnection(){
+    public static Connection getConnection() {
         connection = null;
         try {
             connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
@@ -23,13 +23,14 @@ public class Util {
         }
         return connection;
     }
-        public static void closeConnection(){
-            try {
-               connection.close();
-                System.out.println("Подключение к БД успешно закрыто!");
-            } catch (SQLException e) {
-                e.printStackTrace();
-                System.out.println("Ошибка закрытия соединения с БД!!!");
-            }
+
+    public static void closeConnection() {
+        try {
+            connection.close();
+            System.out.println("Подключение к БД успешно закрыто!");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Ошибка закрытия соединения с БД!!!");
         }
+    }
 }
