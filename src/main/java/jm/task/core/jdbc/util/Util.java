@@ -23,13 +23,13 @@ public class Util {
         }
         return connection;
     }
-    public static void closeConnection(){
-        try {
-           connection.close();
-            System.out.println("Подключение к БД успешно закрыто!");
-        } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("Ошибка закрытия соединения с БД!!!");
+        public static void closeConnection(){
+            try {
+               connection.close();
+                System.out.println("Подключение к БД успешно закрыто!");
+            } catch (SQLException e) {
+                e.printStackTrace();
+                System.out.println("Ошибка закрытия соединения с БД!!!");
+            }
         }
-    }
 }
